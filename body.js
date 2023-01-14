@@ -1,3 +1,4 @@
+import { IMG_CDN_URL } from "./constants";
 import { restaurantList } from "./data";
 
 // const RestaurantCard = function (props) {
@@ -19,7 +20,7 @@ const RestaurantCardWithDestructuring = function ({restaurant}) {
     return (
   
     <div className="card">
-        <img src={"https://res.cloudinary.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_508,h_320,c_fill/"+restaurant.data.cloudinaryImageId}></img>
+        <img src={IMG_CDN_URL+restaurant.data.cloudinaryImageId}></img>
         <h2>{restaurant.data.name}</h2>
         <h4>{restaurant.data.cuisines.join(", ")}</h4>
         <h4>{restaurant.data.avgRating} Stars</h4>
