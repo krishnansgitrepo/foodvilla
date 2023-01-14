@@ -31,16 +31,23 @@ const RestaurantCardWithDestructuring = function ({restaurant}) {
 
 //props - passing arguments to functional component
 const BodyComponent = function () {
+    let searchTxt = "KFC";
     return (
-        <div className="restaurant-list">
-            {
-                restaurantList.map(arestaurant => {
-                    console.log(arestaurant.data.avgRating);
-                    return <RestaurantCardWithDestructuring restaurant = {arestaurant} key={arestaurant.data.id}/>
-                })
-            }
-        
-        </div>
+        <>
+            <div className="search-container">
+                <input type="text" className="search-input" placeholder="Search" value={searchTxt} onChange={(e) => console.log(e.target.value)}/>
+                <button className="search-btn">Search</button>
+            </div>
+            <div className="restaurant-list">
+                {
+                    restaurantList.map(arestaurant => {
+                        console.log(arestaurant.data.avgRating);
+                        return <RestaurantCardWithDestructuring restaurant = {arestaurant} key={arestaurant.data.id}/>
+                    })
+                }
+            
+            </div>
+        </>
     );
 };
 
