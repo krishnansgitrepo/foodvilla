@@ -51,21 +51,32 @@ const BodyComponent = function () {
     //using useState hook
     const [searchInput, setSearchInput] = useState("Namaste");//local state variable in react 
 
+    const [isVegOnly, setIsVegOnly] = useState(false);
+
     const [allrestaurants, setAllRestaurants] = useState(restaurantList);//initially restaurants is loaded with entire restaurantList
 
     const [filteredRestaurants, setFilteredRestaurants] = useState(restaurantList);
 
     //everytime you want your variables to be in sync with UI you need to use state variables
 
-    function filterFunction(restaurantName, restaurants) {
+    function filterFunction(isVegOnly, restaurantName, restaurants) {
         console.log(restaurantName);
+        if (isVegOnly) {
+            return restaurants.filter(r => r.data.name.includes(restaurantName) && r.data.veg === true);
+        }
         return restaurants.filter(r => r.data.name.includes(restaurantName));
     }
 
+    const handleChange = () => {
+        setIsVegOnly(!isVegOnly);
+    };
     
     return (
         <>  
             <div className="search-container">
+
+
+
                 <input type="text" 
                 className="search-input" 
                 placeholder="Search" 
@@ -74,15 +85,20 @@ const BodyComponent = function () {
                     //e.target.value => whatever you write in input
                     setSearchInput(e.target.value);//setSearchInput will update searchInput variable 
                 }}
+                />
+                <button className="search-btn" 
+                onClick = { () => {
+                    const filRestaurants = filterFunction(isVegOnly, searchInput, allrestaurants);
+                    setFilteredRestaurants(filRestaurants);
+                    //allrestaurants variable will hold the filtered list of restaurants
+                }}>Search</button>
 
-            />
-            <button className="search-btn" 
-            onClick = { () => {
-                const filRestaurants = filterFunction(searchInput, allrestaurants);
-                setFilteredRestaurants(filRestaurants);
-                //allrestaurants variable will hold the filtered list of restaurants
-            }}>Search</button>
 
+
+            </div>
+            <div className="furtherfilter">
+                <label>
+                    <input type="checkbox" checked={isVegOnly} onChange={handleChange}/> Veg Only {isVegOnly.toString()}</label>
             </div>
             <div className="restaurant-list">
                 {
