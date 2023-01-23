@@ -20,6 +20,13 @@
     margin: 1px;
 }
 
+.shimmer-card {
+    width: 200px;
+    border: 1px solid silver;
+    padding:10px;
+    margin: 1px;
+}
+
 .card > img {
     width: 100%;
 }

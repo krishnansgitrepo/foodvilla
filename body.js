@@ -1,20 +1,8 @@
 import { useState } from "react";
+import { useEffect } from "react";
 import { IMG_CDN_URL } from "./constants";
-import { restaurantList } from "./data";
+import Shimmer from "./Shimmer";
 
-// const RestaurantCard = function (props) {
-//     console.log(props);
-//     return (
-  
-//     <div className="card">
-//         <img src={"https://res.cloudinary.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_508,h_320,c_fill/"+props.restaurant.data.cloudinaryImageId}></img>
-//         <h2>{props.restaurant.data.name}</h2>
-//         <h3>{props.restaurant.data.cuisines.join(", ")}</h3>
-//         <h4>{props.restaurant.data.lastMileDistance}</h4>
-//     </div>
-
-//     );
-// };
 
 const RestaurantCardWithDestructuring = function ({restaurant}) {
     
@@ -53,9 +41,9 @@ const BodyComponent = function () {
 
     const [isVegOnly, setIsVegOnly] = useState(false);
 
-    const [allrestaurants, setAllRestaurants] = useState(restaurantList);//initially restaurants is loaded with entire restaurantList
+    const [allrestaurants, setAllRestaurants] = useState([]);//initially restaurants is loaded with entire restaurantList
 
-    const [filteredRestaurants, setFilteredRestaurants] = useState(restaurantList);
+    const [filteredRestaurants, setFilteredRestaurants] = useState([]);
 
     //everytime you want your variables to be in sync with UI you need to use state variables
 
@@ -67,11 +55,26 @@ const BodyComponent = function () {
         return restaurants.filter(r => r.data.name.includes(restaurantName));
     }
 
+    async function callSwiggyApi() {
+        const data = await fetch ('https://www.swiggy.com/dapi/restaurants/list/v5?lat=18.5642452&lng=73.7768511&page_type=DESKTOP_WEB_LISTING');
+        const json = await data.json();
+        console.log(json);
+        setAllRestaurants(json?.data?.cards[2]?.data?.data?.cards)
+        setFilteredRestaurants(json?.data?.cards[2]?.data?.data?.cards)
+    }
+
     const handleChange = () => {
         setIsVegOnly(!isVegOnly);
     };
-    
-    return (
+
+    useEffect(()=>{
+        console.log('calling use effect');
+        callSwiggyApi();
+    }, []);
+
+    console.log('calling render');
+    return allrestaurants?.length === 0 ? (<Shimmer/>) :
+     (
         <>  
             <div className="search-container">
 
